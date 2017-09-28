@@ -1,0 +1,24 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: money-tracker-backend
+  namespace: money-tracker
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: money-tracker-backend
+    spec:
+      containers:
+      - name: moneytracker
+        image: money-tracker/money-tracker:dev
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+          - name: SPRING_APPLICATION_JSON
+            valueFrom:
+              secretKeyRef:
+                name: backend-configuration
+                key: config
